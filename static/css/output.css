@@ -566,10 +566,6 @@ video {
   bottom: calc(4rem + 1.5rem);
 }
 
-.right-0 {
-  right: 0px;
-}
-
 .left-0 {
   left: 0px;
 }
@@ -595,10 +591,6 @@ video {
   display: inline-flex;
 }
 
-.table {
-  display: table;
-}
-
 .h-10 {
   height: 2.5rem;
 }
@@ -607,12 +599,20 @@ video {
   height: 2rem;
 }
 
-.h-\[474px\] {
-  height: 474px;
+.h-\[475px\] {
+  height: 475px;
 }
 
 .h-\[634px\] {
   height: 634px;
+}
+
+.h-\[495px\] {
+  height: 495px;
+}
+
+.h-\[520px\] {
+  height: 520px;
 }
 
 .w-8 {
