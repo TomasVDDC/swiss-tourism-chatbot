@@ -37,7 +37,7 @@ async def get_destinations():
         raise HTTPException(status_code=exc.response.status_code, detail="Failed to fetch data from Switzerland API.")
 
 @app.get("/chatprompt/", response_class=HTMLResponse)
-async def get_completion(request: Request ,prompt: str):
+async def get_completion(request: Request ,user_prompt: str):
     model = "mistral-large-latest"
 
     client = Mistral(api_key=MISTRAL_API_KEY)
@@ -47,13 +47,14 @@ async def get_completion(request: Request ,prompt: str):
         messages = [
             {
                 "role": "user",
-                "content": prompt,
+                "content": user_prompt,
             },
         ]
     )
+    chat_message = chat_response.choices[0].message.content
     
     return templates.TemplateResponse(
-        request=request, name="chat_response.html", context={"prompt": prompt}
+        request=request, name="chat_response.html", context={"user_prompt": user_prompt, "chat_message": chat_message}
     )
 
 @app.get("/", response_class=FileResponse)
