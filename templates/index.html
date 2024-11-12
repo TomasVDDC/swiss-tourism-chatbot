@@ -9,9 +9,15 @@
     <!-- htmx -->
     <script src="static/lib/htmx.js" integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
 	    crossorigin="anonymous"></script>
+    <!-- open layers -->
+    <script src="https://cdn.jsdelivr.net/npm/ol@v10.1.0/dist/ol.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v10.1.0/ol.css">
+    
 
 </head>
 <body>
+  <div id="map" class = " w-full h-[634px] right-0 fixed bottom-[calc(4rem+1.5rem)]" ></div>
+  
   <div style="box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgb(0 0 0 / 0.05);"
     class="  fixed bottom-[calc(4rem+1.5rem)] left-0 mr-4 bg-white p-6 rounded-lg border border-[#e5e7eb] w-[440px] h-[634px]  ">
 
@@ -48,6 +54,29 @@
 
   </div>
   
+  <script>
+    
+    const vectorLayer = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+
+    });
+
+
+    const map = new ol.Map({
+	target: 'map',
+	view: new ol.View({
+            center: [831634.867743, 5903537.442577], // Coordinate system is EPSG:3857
+            zoom: 8,
+
+	}),
+	layers: [new ol.layer.Tile({
+            source: new ol.source.OSM()
+	}), vectorLayer]
+    });
+  
+  </script>  
 
 </body>
+
+
 </html>

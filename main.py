@@ -1,5 +1,4 @@
 from typing import Union
-
 from fastapi import FastAPI, Request
 import httpx
 from dotenv import load_dotenv

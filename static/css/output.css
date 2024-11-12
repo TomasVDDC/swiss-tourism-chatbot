@@ -570,6 +570,10 @@ video {
   left: 0px;
 }
 
+.right-0 {
+  right: 0px;
+}
+
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -599,20 +603,16 @@ video {
   height: 2rem;
 }
 
-.h-\[475px\] {
-  height: 475px;
+.h-\[520px\] {
+  height: 520px;
 }
 
 .h-\[634px\] {
   height: 634px;
 }
 
-.h-\[495px\] {
-  height: 495px;
-}
-
-.h-\[520px\] {
-  height: 520px;
+.h-\[400px\] {
+  height: 400px;
 }
 
 .w-8 {
