@@ -36,7 +36,7 @@ tools = [
         "type": "function",
         "function": {
             "name": "call_destinations_api",
-            "description": "Given a destination type it returns destinations of that type in switzerland",
+            "description": "Given a destination type it returns destinations of that type in switzerland. Make the name plurial",
             "parameters": {
                 "type": "object", 
                 "properties": {
@@ -51,32 +51,54 @@ tools = [
     }
 ]
 
-messages = [{"role": "user", "content": "Can you show me mountains in switzerland?"}]
+def extract_place_data(response_dict):
+    data = response_dict["data"]
+    place_data = []
 
-model = "mistral-large-latest"
+    for place_type in data:
+        place_info = {
+            "name": place_type["name"],
+            "latitude": place_type["geo"]["latitude"],
+            "longitude": place_type["geo"]["longitude"]
+        }
+        place_data.append(place_info)
 
-client = Mistral(api_key=MISTRAL_API_KEY)
-response = client.chat.complete(
-    model = model,
-    messages = messages,
-    tools = tools,
-    tool_choice = "any",
-)
+    return place_data
 
-tool_call = response.choices[0].message.tool_calls[0]
-function_name = tool_call.function.name
-function_params = json.loads(tool_call.function.arguments)
+def destination_function_calling(messages):
 
-print("\nfunction_name: ", function_name, "\nfunction_params: ", function_params)
+    model = "mistral-large-latest"
 
-#calls sayHello with the parameters from the user
-response_dict = names_to_functions[function_name](**function_params)
+    client = Mistral(api_key=MISTRAL_API_KEY)
+    response = client.chat.complete(
+        model = model,
+        messages = messages,
+        tools = tools,
+        tool_choice = "any",
+    )
+    messages.append(response.choices[0].message)
+    
+    tool_call = response.choices[0].message.tool_calls[0]
+    function_name = tool_call.function.name
+    function_params = json.loads(tool_call.function.arguments)
 
+    print("\nfunction_name: ", function_name, "\nfunction_params: ", function_params)
 
-data = response_dict["data"]
-for mountain in data:
-    print(mountain["name"])
-    print(mountain["geo"]["latitude"])    
-    print(mountain["geo"]["longitude"])    
+    response_dict = names_to_functions[function_name](**function_params)
 
+    data = response_dict["data"]
+    print("*")
+    for place_type in data:
 
+        print(place_type["name"])
+        print(place_type["geo"]["latitude"])    
+        print(place_type["geo"]["longitude"])
+        
+    place_data = extract_place_data(response_dict)
+    place_data_string = json.dumps(place_data)
+    messages.append({"role":"tool", "name":function_name, "content":place_data_string, "tool_call_id":tool_call.id})
+    
+    return messages, place_data
+
+# place_data = destination_function_calling("I have heard there are quite a few nice mountains in switzerland")
+# print(place_data)
