@@ -18,7 +18,8 @@
 <body>
   
   <div id="map" class = " w-full h-[634px] right-0 fixed bottom-[calc(4rem+1.5rem)]" ></div>
-  
+  <div id="popup" class="inline-block px-5 py-3  max-w-64  text-sm font-medium text-white bg-gray-900 rounded-lg">  </div>
+
   <div style="box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgb(0 0 0 / 0.05);"
     class="  fixed bottom-[calc(4rem+1.5rem)] left-0 mr-4 bg-white p-6 rounded-lg border border-[#e5e7eb] w-[440px] h-[634px]  ">
 
@@ -81,38 +82,6 @@
     });
 
   function initializeMap() {
-    
-
-
-	// let numberOfPlaces = Array.isArray(places_array) ? places_array.length : 0;
-	// console.log("numberOfPlaces",numberOfPlaces)
-	
-	// for (i = 0; i < numberOfPlaces; i++) {
-
-        //     coor = [places_array[i].longitude, places_array[i].latitude ]
-	//     console.log("coor",coor)
-        //     // description = {{.}}[i].Description
-        //     // url = {{.}}[i].Url
-
-        //     const feature = new ol.Feature({
-	// 	geometry: new ol.geom.Point(
-        //             ol.proj.fromLonLat(coor))
-	// 	// description: description,
-	// 	// url: url
-
-        //     });
-        //     vectorLayer.getSource().addFeature(feature)
-	// }
-
-
-	// coor = [8.035754930988903,46.82094325036989]  //longitude,latitude
-	
-	// const feature = new ol.Feature({
-	//     geometry: new ol.geom.Point(
-	//         ol.proj.fromLonLat(coor))
-	// });
-
-	// vectorLayer.getSource().addFeature(feature)
 
 	var imageStyle = new ol.style.Style({
             image: new ol.style.Circle({
@@ -137,6 +106,34 @@
 		source: new ol.source.OSM()
 	    }), vectorLayer]
 	});
+
+      const container = document.getElementById('popup');
+      const popupOverlay = new ol.Overlay({
+          element: container,
+          positioning: 'center-center',
+          offset: [0, -35],
+          insertFirst: false,
+
+      });
+      
+      map.addOverlay(popupOverlay);
+      
+      map.on('pointermove', function (e) {
+          const pixel = map.getEventPixel(e.originalEvent);
+          const hit = map.hasFeatureAtPixel(pixel);
+
+          if (hit) {
+              //How to get all features you hover on.
+              //const featureArray = map.getFeaturesAtPixel(pixel);
+              console.log(e.coordinate);
+              popupOverlay.element.hidden = false;
+              popupOverlay.setPosition(e.coordinate);
+              popupOverlay.element.children[0].innerHTML = map.getFeaturesAtPixel(pixel)[0].values_.name;
+          } else {
+              popupOverlay.element.hidden = true;
+          }
+      });
+
     }
 
     function updateMapFeatures() {
@@ -149,13 +146,13 @@
         for (let i = 0; i < numberOfPlaces; i++) {
 	    const coor = [places_array[i].longitude, places_array[i].latitude];
 	    console.log("coor", coor);
-	    // description = {{.}}[i].Description
+	    name = places_array[i].name
 	    // url = {{.}}[i].Url
 
 	    const feature = new ol.Feature({
                 geometry: new ol.geom.Point(
-		    ol.proj.fromLonLat(coor))
-                // description: description,
+		    ol.proj.fromLonLat(coor)),
+                name:name
                 // url: url
 	    });
 	    vectorLayer.getSource().addFeature(feature);
