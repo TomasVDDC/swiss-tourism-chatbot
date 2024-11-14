@@ -56,80 +56,112 @@
   </div>
   
   <script>
-    
-    let dataContainer;
-    
-    document.addEventListener('map', function() {
-        fetch('/get_places/')
-            .then(response => response.json())
-            .then(data => {
-		console.log(data)
-                const dataContainer = document.getElementById('data-container');
-
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    });
-
-    console.log(dataContainer)
+    let places_array = [];
     const vectorLayer = new ol.layer.Vector({
         source: new ol.source.Vector(),
 
     });
+    // let map;
     
-    // numberOfPlaces = {{places}}.length
-    
-    // for (i = 0; i < numberOfPlaces; i++) {
+    initializeMap()
 
-    //     coor = [{{places[i].longitude}}, {{places[i].longitude}}]
-    //     description = {{.}}[i].Description
-    //     url = {{.}}[i].Url
+    document.addEventListener("map", async () => {
+	try {
+	    const response = await fetch('/get_places'); // Fetch data from the 'get_places' route
+	    if (!response.ok) {
+		throw new Error(`HTTP error! status: ${response.status}`);
+	    }
 
-    //     const feature = new ol.Feature({
-    //         geometry: new ol.geom.Point(
-    //             ol.proj.fromLonLat(coor)),
-    //         description: description,
-    //         url: url
-
-    //     });
-    //     vectorLayer.getSource().addFeature(feature)
-    // }
-
-
-    // coor = [8.035754930988903,46.82094325036989]  //longitude,latitude
-    
-    // const feature = new ol.Feature({
-    //     geometry: new ol.geom.Point(
-    //         ol.proj.fromLonLat(coor))
-    // });
-
-    // vectorLayer.getSource().addFeature(feature)
-
-    var imageStyle = new ol.style.Style({
-        image: new ol.style.Circle({
-            radius: 8,
-            fill: new ol.style.Fill({ color: 'red' }),
-            stroke: new ol.style.Stroke({ color: 'black', width: 2 })
-        })
+	    places_array = await response.json(); // Parse the JSON response
+	    updateMapFeatures()
+	    
+	} catch (error) {
+	    console.error("Error fetching places:", error);
+	}
     });
 
+  function initializeMap() {
+    
 
-    vectorLayer.setStyle(imageStyle);
+
+	// let numberOfPlaces = Array.isArray(places_array) ? places_array.length : 0;
+	// console.log("numberOfPlaces",numberOfPlaces)
+	
+	// for (i = 0; i < numberOfPlaces; i++) {
+
+        //     coor = [places_array[i].longitude, places_array[i].latitude ]
+	//     console.log("coor",coor)
+        //     // description = {{.}}[i].Description
+        //     // url = {{.}}[i].Url
+
+        //     const feature = new ol.Feature({
+	// 	geometry: new ol.geom.Point(
+        //             ol.proj.fromLonLat(coor))
+	// 	// description: description,
+	// 	// url: url
+
+        //     });
+        //     vectorLayer.getSource().addFeature(feature)
+	// }
 
 
-    const map = new ol.Map({
-	target: 'map',
-	view: new ol.View({
-            center: [831634.867743, 5903537.442577], // Coordinate system is EPSG:3857
-            zoom: 8,
+	// coor = [8.035754930988903,46.82094325036989]  //longitude,latitude
+	
+	// const feature = new ol.Feature({
+	//     geometry: new ol.geom.Point(
+	//         ol.proj.fromLonLat(coor))
+	// });
 
-	}),
-	layers: [new ol.layer.Tile({
-            source: new ol.source.OSM()
-	}), vectorLayer]
-    });
-  
+	// vectorLayer.getSource().addFeature(feature)
+
+	var imageStyle = new ol.style.Style({
+            image: new ol.style.Circle({
+		radius: 8,
+		fill: new ol.style.Fill({ color: 'red' }),
+		stroke: new ol.style.Stroke({ color: 'black', width: 2 })
+            })
+	});
+
+
+	vectorLayer.setStyle(imageStyle);
+
+
+	const map = new ol.Map({
+	    target: 'map',
+	    view: new ol.View({
+		center: [831634.867743, 5903537.442577], // Coordinate system is EPSG:3857
+		zoom: 8,
+
+	    }),
+	    layers: [new ol.layer.Tile({
+		source: new ol.source.OSM()
+	    }), vectorLayer]
+	});
+    }
+
+    function updateMapFeatures() {
+        // Clear existing features before adding new ones
+        // vectorLayer.getSource().clear();
+
+        let numberOfPlaces = Array.isArray(places_array) ? places_array.length : 0;
+        console.log("numberOfPlaces", numberOfPlaces);
+
+        for (let i = 0; i < numberOfPlaces; i++) {
+	    const coor = [places_array[i].longitude, places_array[i].latitude];
+	    console.log("coor", coor);
+	    // description = {{.}}[i].Description
+	    // url = {{.}}[i].Url
+
+	    const feature = new ol.Feature({
+                geometry: new ol.geom.Point(
+		    ol.proj.fromLonLat(coor))
+                // description: description,
+                // url: url
+	    });
+	    vectorLayer.getSource().addFeature(feature);
+        }
+    }
+    
   </script>  
 
 </body>
