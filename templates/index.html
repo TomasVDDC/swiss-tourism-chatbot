@@ -91,14 +91,23 @@
 
   function initializeMap() {
 
-	var imageStyle = new ol.style.Style({
-            image: new ol.style.Circle({
-		radius: 6,
-		// fill: new ol.style.Fill({ color: 'red' }),
-		stroke: new ol.style.Stroke({ color: 'red', width: 2 })
-            })
-	});
+	/* var imageStyle = new ol.style.Style({ */
+        /*     image: new ol.style.Circle({ */
+	/* 	radius: 6, */
+	/* 	// fill: new ol.style.Fill({ color: 'red' }), */
+	/* 	stroke: new ol.style.Stroke({ color: 'red', width: 2 }) */
+        /*     }) */
+	/* }); */
 
+      var imageStyle = new ol.style.Style({
+    image: new ol.style.Icon({
+        anchor: [0.5, 1], // Adjust anchor to align marker tip with location
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        src: 'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/map-marker-48.png', // Replace with the actual path to your marker image
+        scale: 1 // Adjust scale if necessary
+    })
+});
 
 	vectorLayer.setStyle(imageStyle);
 
@@ -131,6 +140,7 @@
           const hit = map.hasFeatureAtPixel(pixel);
 
           if (hit) {
+	      map.getTargetElement().style.cursor = 'pointer';
               //How to get all features you hover on.
               //const featureArray = map.getFeaturesAtPixel(pixel);
               console.log(e.coordinate);
@@ -138,11 +148,26 @@
               popupOverlay.setPosition(e.coordinate);
               popupOverlay.element.children[0].innerHTML = map.getFeaturesAtPixel(pixel)[0].values_.name;
           } else {
+	      map.getTargetElement().style.cursor = '';
               popupOverlay.element.hidden = true;
           }
-      });
+    });
+      map.on('click', function (e) {
+	popupOverlay.element.hidden = true;
+	const pixel = map.getEventPixel(e.originalEvent);
+	const hit = map.hasFeatureAtPixel(pixel);
+	if (hit) {
+	    console.log("clicked")
+	    const url = map.getFeaturesAtPixel(pixel)[0].values_.url;
+	    window.open(url, '_blank').focus();
+	    // use js to open new tab
 
-    }
+	}
+    });
+
+  }
+      
+
 
     function updateMapFeatures() {
         // Clear existing features before adding new ones
@@ -155,13 +180,13 @@
 	    const coor = [places_array[i].longitude, places_array[i].latitude];
 	    console.log("coor", coor);
 	    name = places_array[i].name
-	    // url = {{.}}[i].Url
+	    url = places_array[i].url
 
 	    const feature = new ol.Feature({
                 geometry: new ol.geom.Point(
 		    ol.proj.fromLonLat(coor)),
-                name:name
-                // url: url
+                name:name,
+                url: url
 	    });
 	    vectorLayer.getSource().addFeature(feature);
         }

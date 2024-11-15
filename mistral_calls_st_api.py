@@ -59,7 +59,8 @@ def extract_place_data(response_dict):
         place_info = {
             "name": place_type["name"],
             "latitude": place_type["geo"]["latitude"],
-            "longitude": place_type["geo"]["longitude"]
+            "longitude": place_type["geo"]["longitude"],
+            "url": place_type["url"]
         }
         place_data.append(place_info)
 
