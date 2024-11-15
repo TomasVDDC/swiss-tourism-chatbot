@@ -45,7 +45,14 @@ async def get_destinations():
 
 @app.get("/chatprompt/", response_class=HTMLResponse)
 async def get_completion(request: Request ,user_prompt: str):
-    messages = [{"role": "user", "content": user_prompt}]
+    messages = [
+        {
+         "role": "system",
+         "content": "Keep your answers concise"},
+        {"role": "user",
+         "content": user_prompt}
+    ]
+    
     messages, place_data = destination_function_calling(messages)
     shared_state.places = place_data
     

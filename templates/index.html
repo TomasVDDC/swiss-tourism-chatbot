@@ -13,13 +13,21 @@
     <script src="https://cdn.jsdelivr.net/npm/ol@v10.1.0/dist/ol.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v10.1.0/ol.css">
     
+    <style>
+       #map {
+      z-index: -1; /* Ensure the map is behind the title */
+       }
+    </style>
 
 </head>
-<body>
-  
-  <div id="map" class = " w-full h-[634px] right-0 fixed bottom-[calc(4rem+1.5rem)]" ></div>
+<body >
+  <div class="w-full text-center mt-10">
+    <h1 class="text-4xl font-bold text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]" > Swiss Tourism Chat Bot</h1>
+  </div>
+  <!-- <div id="map" class = " w-full h-[634px] right-0 fixed bottom-[calc(4rem+1.5rem)]" ></div> -->
+    <div id="map" class = " w-full h-full fixed right-0 bottom-[0rem]" ></div>
   <div id="popup" class="inline-block px-5 py-3  max-w-64  text-sm font-medium text-white bg-gray-900 rounded-lg">  </div>
-
+  
   <div style="box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgb(0 0 0 / 0.05);"
     class="  fixed bottom-[calc(4rem+1.5rem)] left-0 mr-4 bg-white p-6 rounded-lg border border-[#e5e7eb] w-[440px] h-[634px]  ">
 
@@ -85,9 +93,9 @@
 
 	var imageStyle = new ol.style.Style({
             image: new ol.style.Circle({
-		radius: 8,
-		fill: new ol.style.Fill({ color: 'red' }),
-		stroke: new ol.style.Stroke({ color: 'black', width: 2 })
+		radius: 6,
+		// fill: new ol.style.Fill({ color: 'red' }),
+		stroke: new ol.style.Stroke({ color: 'red', width: 2 })
             })
 	});
 
@@ -138,7 +146,7 @@
 
     function updateMapFeatures() {
         // Clear existing features before adding new ones
-        // vectorLayer.getSource().clear();
+        vectorLayer.getSource().clear();
 
         let numberOfPlaces = Array.isArray(places_array) ? places_array.length : 0;
         console.log("numberOfPlaces", numberOfPlaces);
