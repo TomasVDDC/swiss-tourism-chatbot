@@ -1,17 +1,53 @@
 ** Context
-   Switzerland tourism website [url] is a collection of the best things to visit in Switzerland. The goal of this project is to provide a
+   Switzerland tourism [[https://www.myswitzerland.com/en-ch/][website]] is a collection of the best things to visit in Switzerland. The goal of this project is to provide a
    chat UI that enables a user to query the swizerland tourism webiste in Natural language. The website also provides a map to visualize the
    locations of the tourism spots to visit.
 
 ** Try it here
-   [url of the website]
+   [[https://swiss-tourism-chatbot-production.up.railway.app/][Live Demo]]
 
+** Running the Project Locally
+
+*** Clone the Repository
+#+BEGIN_SRC sh
+git clone https://github.com/TomasVDDC/swiss-tourism-chatbot.git
+cd swiss-tourism-chatbot
+#+END_SRC
+
+*** Create a Virtual Environment
+#+BEGIN_SRC sh
+python -m venv venv
+source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+#+END_SRC
+
+*** Install Dependencies
+#+BEGIN_SRC sh
+pip install -r requirements.txt
+#+END_SRC
+
+*** Start the Web Server
+#+BEGIN_SRC sh
+fastapi dev main.py
+#+END_SRC
+
+*** Optional: Customize CSS with Tailwind
+    
+Tailwind CSS is used for styling the website. To make your own changes, you will need to use the Tailwind CLI to generate an ~output.css~ file.
+
+#+BEGIN_SRC sh
+tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch
+#+END_SRC
+*** Run Tests
+#+BEGIN_SRC sh
+pytest -v
+#+END_SRC
 ** How does it work?
-   The LLM used to process the natural language of the user is Mistral (specify model). By looking at an user's prompt Mistral is able to call the swiss tourism api with relevant parameter. This is a demonstration of Mistral's function calling capabilities [url of function calling]
-   Example of a workflow:
-   User Prompt:
+   The Large Language Model (LLM) used to process the natural language of the user is Mistral (specify model). By analyzing the user's prompt, Mistral can call the Swiss Tourism API   with relevant parameters. This project demonstrates Mistral's function-calling capabilities.
+   
+*** Example of a workflow:
+   *User Prompt:*
    "What are some mountains is switzerland that I could visit?"
-   Swiss Tourism API:
+   *Swiss Tourism API:*
    Mistral will attempt to call the api using the correct parameters.
    
    The https request to the api looks like this:
@@ -20,19 +56,10 @@
    <parameter> has to be a word that the api recognizes.
    In this example we expect mistral to pick the word "mountains" as a parameter.
    
-   API response:
+   *API response:*
    The api gives back a list of destinations that match the parameter. In our case a list of mountains with their coordinates. We can use this information to enhance
    mistrals response to the user as well as populate the map.
    
-  ** Run it locally
-   1. clone this repo git clone [url of repo]
-   2. create a new python virtual environment
-   3. pip install the requirements
-   4. start the web server fastapi main.py
-
-  Tailwind is used for CSS of the website. To make your own changes you will need to use the tailwind cli to create an output.css.
-
-  
       
 
       
