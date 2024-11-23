@@ -49,6 +49,7 @@ tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch
 *** Example of a workflow:
    *User Prompt:*
    "What are some mountains is switzerland that I could visit?"
+   
    *Swiss Tourism API:*
    Mistral will attempt to call the api using the correct parameters.
    
@@ -67,3 +68,5 @@ tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch
       
       
       
+
+   
