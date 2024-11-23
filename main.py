@@ -33,7 +33,7 @@ async def get_completion(request: Request ,user_prompt: str):
     messages = [
         {
          "role": "system",
-         "content": "Keep your answers concise"},
+         "content": "Keep your answers concise. Do not include in your response coordinates or urls."},
         {"role": "user",
          "content": user_prompt}
     ]
@@ -67,7 +67,7 @@ async def serve_html():
 
 @app.get("/get_places/")
 async def get_places():
-    print("places", shared_state.places)
+    # print("places", shared_state.places)
     return JSONResponse(content = shared_state.places)
 
 

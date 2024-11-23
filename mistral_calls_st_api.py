@@ -33,13 +33,13 @@ tools = [
         "type": "function",
         "function": {
             "name": "call_destinations_api",
-            "description": "Given a destination type it returns destinations of that type in switzerland. Make the name plurial",
+            "description": "Given a destination type it returns destinations of that type in switzerland.",
             "parameters": {
                 "type": "object", 
                 "properties": {
                     "place_type": {
                         "type": "string", 
-                        "description": "The type of activity"
+                        "description": "The type of activity. It has to be one of the following: villages,regions,mountains,mountainlakes,cities,valleys,natureparks,smalllakes,islands                                         biglakes,rivers,glaciers,lakes,mountainpasses,plain,forests,wildlifeparks"
                     }
                 }, 
                 "required": ["place_type"]
