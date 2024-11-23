@@ -6,11 +6,8 @@ import json
 import functools
 
 load_dotenv()
-
 ST_API_KEY = os.getenv("ST_API_KEY")
 MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
-
-
 
 def call_destinations_api(place_type : str):
     url = "https://opendata.myswitzerland.io/v1/destinations?facet.filter=placetypes%3A{}".format(place_type)
@@ -88,12 +85,12 @@ def destination_function_calling(messages):
     response_dict = names_to_functions[function_name](**function_params)
 
     data = response_dict["data"]
-    print("*")
-    for place_type in data:
+    # log the api response 
+    # for place_type in data:
 
-        print(place_type["name"])
-        print(place_type["geo"]["latitude"])    
-        print(place_type["geo"]["longitude"])
+    #     print(place_type["name"])
+    #     print(place_type["geo"]["latitude"])    
+    #     print(place_type["geo"]["longitude"])
         
     place_data = extract_place_data(response_dict)
     place_data_string = json.dumps(place_data)
@@ -101,5 +98,5 @@ def destination_function_calling(messages):
     
     return messages, place_data
 
-# place_data = destination_function_calling("I have heard there are quite a few nice mountains in switzerland")
-# print(place_data)
+
+

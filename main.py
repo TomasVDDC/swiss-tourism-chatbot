@@ -9,39 +9,24 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, JSONResponse
 from mistral_calls_st_api import destination_function_calling
-load_dotenv()
+
 app = FastAPI()
 
+# create a file server
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
+# env variables
+load_dotenv()
 ST_API_KEY = os.getenv("ST_API_KEY")
 MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
 
-# Shared state object
+# shared state object
 class SharedState:
     def __init__(self):
         self.places = None
 
 shared_state = SharedState()
-
-
-@app.get("/destinations/")
-async def get_destinations():
-    url = "https://opendata.myswitzerland.io/v1/destinations?expand=false"
-    headers = {
-        "accept": "application/json",
-        "x-api-key": ST_API_KEY
-    }
-    
-    try:
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url, headers=headers)
-            response.raise_for_status()  # Check if the response contains an HTTP error status
-        return response.json()  # Return the response as JSON data
-    
-    except httpx.HTTPStatusError as exc:
-        raise HTTPException(status_code=exc.response.status_code, detail="Failed to fetch data from Switzerland API.")
 
 @app.get("/chatprompt/", response_class=HTMLResponse)
 async def get_completion(request: Request ,user_prompt: str):
@@ -76,7 +61,7 @@ async def get_completion(request: Request ,user_prompt: str):
 
 @app.get("/", response_class=FileResponse)
 async def serve_html():
-    file_path = os.path.join(os.getcwd(), "./templates/index.html")  # Path to your HTML file
+    file_path = os.path.join(os.getcwd(), "./templates/index.html")
     return FileResponse(file_path)
 
 
@@ -85,7 +70,4 @@ async def get_places():
     print("places", shared_state.places)
     return JSONResponse(content = shared_state.places)
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
 
