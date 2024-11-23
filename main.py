@@ -28,7 +28,7 @@ class SharedState:
 
 shared_state = SharedState()
 
-@app.get("/chatprompt/", response_class=HTMLResponse)
+@app.get("/chatprompt", response_class=HTMLResponse)
 async def get_completion(request: Request ,user_prompt: str):
     messages = [
         {
@@ -65,7 +65,7 @@ async def serve_html():
     return FileResponse(file_path)
 
 
-@app.get("/get_places/")
+@app.get("/get_places")
 async def get_places():
     # print("places", shared_state.places)
     return JSONResponse(content = shared_state.places)
