@@ -5,7 +5,8 @@
 
 ** Try it here
    [[https://swiss-tourism-chatbot-production.up.railway.app/][Live Demo]]
-
+** Available Place Types
+The available place types currently implemented are: villages, regions, mountains, mountainlakes, cities, valleys, natureparks, smalllakes, islands, biglakes, rivers, glaciers, lakes, mountainpasses, plain, forests, wildlifeparks.
 ** Running the Project Locally
 
 *** Clone the Repository
@@ -26,8 +27,13 @@ pip install -r requirements.txt
 #+END_SRC
 
 *** Start the Web Server
+    
 #+BEGIN_SRC sh
 fastapi dev main.py
+#+END_SRC
+*** Run Tests
+#+BEGIN_SRC sh
+pytest -v
 #+END_SRC
 
 *** Optional: Customize CSS with Tailwind
@@ -36,10 +42,6 @@ Tailwind CSS is used for styling the website. To make your own changes, you will
 
 #+BEGIN_SRC sh
 tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch
-#+END_SRC
-*** Run Tests
-#+BEGIN_SRC sh
-pytest -v
 #+END_SRC
 ** How does it work?
    The Large Language Model (LLM) used to process the natural language of the user is Mistral (specify model). By analyzing the user's prompt, Mistral can call the Swiss Tourism API   with relevant parameters. This project demonstrates Mistral's function-calling capabilities.
