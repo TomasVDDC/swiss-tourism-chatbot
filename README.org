@@ -1,12 +1,12 @@
 ** Context
-   Switzerland tourism [[https://www.myswitzerland.com/en-ch/][website]] is a collection of the best things to visit in Switzerland. The goal of this project is to provide a
-   chat UI that enables a user to query the swizerland tourism webiste in Natural language. The website also provides a map to visualize the
+   The Switzerland tourism [[https://www.myswitzerland.com/en-ch/][website]] is a collection of the best things to visit in Switzerland. The goal of this project is to provide a
+   chat UI that enables a user to query the swizerland tourism website in natural language. The website also provides a map to visualize the
    locations of the tourism spots to visit.
 
 ** Try it here
    [[https://swiss-tourism-chatbot-production.up.railway.app/][Live Demo]]
-** Available Place Types
-The available place types currently implemented are: villages, regions, mountains, mountainlakes, cities, valleys, natureparks, smalllakes, islands, biglakes, rivers, glaciers, lakes, mountainpasses, plain, forests, wildlifeparks.
+** Currently Available Place Types
+The available place types currently implemented are: villages, regions, mountains, mountainlakes, cities, valleys, natureparks, smalllakes, islands, biglakes, rivers, glaciers, lakes, mountainpasses, plain, forests, wildlifeparks. The chatbot won't be able to display other place types.
 ** Running the Project Locally
 
 *** Clone the Repository
