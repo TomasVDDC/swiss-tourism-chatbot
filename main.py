@@ -55,6 +55,7 @@ async def get_completion(request: Request ,user_prompt: str):
     server_response = templates.TemplateResponse(
         request=request, name="chat_response.html", context={"user_prompt": user_prompt, "chat_message": chat_message}
     )
+    #The map on the frontend listens for this header and when triggered calls /get_places
     server_response.headers["HX-Trigger"] = "map"
     return server_response
 
