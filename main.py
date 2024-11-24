@@ -41,19 +41,23 @@ async def get_completion(request: Request ,user_prompt: str):
     messages, place_data = destination_function_calling(messages)
     shared_state.places = place_data
     
-    model = "mistral-large-latest"
-    client = Mistral(api_key=MISTRAL_API_KEY)
+    # model = "mistral-large-latest"
+    # client = Mistral(api_key=MISTRAL_API_KEY)
 
 
-    response = client.chat.complete(
-        model = model, 
-        messages = messages
-    )
-    
-    chat_message = response.choices[0].message.content
+    # response = client.chat.complete(
+    #     model = model, 
+    #     messages = messages,
+    #     response_format = {
+    #       "type": "json_object",
+    #   }
+    # )
+    # print("json output")
+    # print(response.choices[0].message.content)
+    # chat_message = response.choices[0].message.content
     
     server_response = templates.TemplateResponse(
-        request=request, name="chat_response.html", context={"user_prompt": user_prompt, "chat_message": chat_message}
+        request=request, name="chat_response.html", context={"user_prompt": user_prompt, "chat_message": place_data}
     )
     #The map on the frontend listens for this header and when triggered calls /get_places
     server_response.headers["HX-Trigger"] = "map"
