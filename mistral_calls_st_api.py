@@ -53,6 +53,9 @@ def extract_place_data(response_dict):
     place_data = []
 
     for place_type in data:
+        if "geo" not in place_type:
+            continue
+        
         place_info = {
             "name": place_type["name"],
             "latitude": place_type["geo"]["latitude"],
