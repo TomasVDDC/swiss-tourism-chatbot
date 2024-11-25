@@ -50,21 +50,23 @@ tools = [
 
 def extract_place_data(response_dict):
     data = response_dict["data"]
-    place_data = []
+    places = {}
 
-    for place_type in data:
-        if "geo" not in place_type:
+    for place in data:
+        if "geo" not in place or "abstract" not in place:
             continue
         
         place_info = {
-            "name": place_type["name"],
-            "latitude": place_type["geo"]["latitude"],
-            "longitude": place_type["geo"]["longitude"],
-            "url": place_type["url"]
+            "name": place["name"],
+            "latitude": place["geo"]["latitude"],
+            "longitude": place["geo"]["longitude"],
+            "url": place["url"],
+            "abstract": place["abstract"],
+            "photo": place["photo"],            
         }
-        place_data.append(place_info)
+        places[place["name"]] = place_info
 
-    return place_data
+    return places
 
 def destination_function_calling(messages):
 
