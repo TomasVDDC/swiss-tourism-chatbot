@@ -30,7 +30,7 @@
 
   <!-- Chat Window -->
     <div style="box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgb(0 0 0 / 0.05);"
-    class="fixed left-4 transform top-1/2 -translate-y-1/2 bg-white p-6 rounded-lg border border-[#e5e7eb] w-[440px] h-[600px]">
+    class="fixed left-4 transform top-1/2 -translate-y-1/2 bg-white p-6 rounded-lg border border-[#e5e7eb] w-[440px] h-[610px]">
     <!-- Chat Container -->
     <div id="chat-container" class="pr-4 h-[420px] overflow-y-auto w-full"  >
       <!-- Chat Message AI -->
@@ -49,7 +49,7 @@
 
     </div>
     <!-- Input box  -->
-    <div class="flex items-center pt-0">
+    <div class="mt-2 flex items-center pt-0">
       <form  hx-get="/chatprompt" hx-on::after-request=" if(event.detail.successful) this.reset()" hx-swap="beforeend  scroll:bottom" hx-target="#chat-container"
 	class="flex items-center justify-center w-full space-x-2">
         <input
@@ -81,7 +81,7 @@
     </div>
   
   <script>
-    let places_array = [];
+    let places_dic =  {};
     const vectorLayer = new ol.layer.Vector({
         source: new ol.source.Vector(),
 
@@ -97,7 +97,7 @@
 		throw new Error(`HTTP error! status: ${response.status}`);
 	    }
 
-	    places_array = await response.json(); // Parse the JSON response
+	    places_dic = await response.json(); // Parse the JSON response
 	    updateMapFeatures()
 	    
 	} catch (error) {
@@ -182,23 +182,43 @@
         // Clear existing features before adding new ones
         vectorLayer.getSource().clear();
 
-        let numberOfPlaces = Array.isArray(places_array) ? places_array.length : 0;
-        console.log("numberOfPlaces", numberOfPlaces);
+	let numberOfPlaces = typeof places_dic === 'object' && places_dic !== null ? Object.keys(places_dic).length : 0;
+	console.log("numberOfPlaces", numberOfPlaces);
 
-        for (let i = 0; i < numberOfPlaces; i++) {
-	    const coor = [places_array[i].longitude, places_array[i].latitude];
-	    console.log("coor", coor);
-	    name = places_array[i].name
-	    url = places_array[i].url
+	for (let key in places_dic) {
+	    if (places_dic.hasOwnProperty(key)) {
+		const place = places_dic[key];
+		const coor = [place.longitude, place.latitude];
+		console.log("coor", coor);
+		const name = place.name;
+		const url = place.url;
 
-	    const feature = new ol.Feature({
-                geometry: new ol.geom.Point(
-		    ol.proj.fromLonLat(coor)),
-                name:name,
-                url: url
-	    });
-	    vectorLayer.getSource().addFeature(feature);
-        }
+		const feature = new ol.Feature({
+		    geometry: new ol.geom.Point(ol.proj.fromLonLat(coor)),
+		    name: name,
+		    url: url
+		});
+		vectorLayer.getSource().addFeature(feature);
+	    }
+	}
+
+        // let numberOfPlaces = Array.isArray(places_dic) ? places_dic.length : 0;
+        // console.log("numberOfPlaces", numberOfPlaces);
+
+        // for (let i = 0; i < numberOfPlaces; i++) {
+	//     const coor = [places_dic[i].longitude, places_dic[i].latitude];
+	//     console.log("coor", coor);
+	//     name = places_dic[i].name
+	//     url = places_dic[i].url
+
+	//     const feature = new ol.Feature({
+        //         geometry: new ol.geom.Point(
+	// 	    ol.proj.fromLonLat(coor)),
+        //         name:name,
+        //         url: url
+	//     });
+	//     vectorLayer.getSource().addFeature(feature);
+        // }
     }
     
   </script>  

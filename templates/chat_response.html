@@ -24,9 +24,9 @@
 	  <span class="block font-bold text-gray-700">AI</span>
 	  <span class="block text-gray-700">Here are the places:</span>
 	  <div class="flex flex-wrap gap-2">
-            {% for item in chat_message %}
-            <div class="flex justify-center items-center flex-grow min-w-[100px] cursor-pointer p-1 bg-white border border-gray-200 rounded-md shadow hover:bg-gray-100">
-              <span class="text-gray-700 hover">{{ item.name }}</span>
+            {% for name in chat_message.keys() %}
+            <div hx-get="/place_card?place_name={{ name }}" class="flex justify-center items-center flex-grow min-w-[100px] cursor-pointer p-1 bg-white border border-gray-200 rounded-md shadow hover:bg-gray-100">
+              <span class="text-gray-700 hover">{{ name }}</span>
             </div>
             {% endfor %}
 	  </div>
