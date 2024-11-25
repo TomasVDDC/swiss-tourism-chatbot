@@ -57,14 +57,16 @@ def extract_place_data(response_dict):
             continue
         
         place_info = {
-            "name": place["name"],
+            "name": place["name"].strip(), #strip removes leading and trailing whitespaces
             "latitude": place["geo"]["latitude"],
             "longitude": place["geo"]["longitude"],
             "url": place["url"],
             "abstract": place["abstract"],
             "photo": place["photo"],            
         }
-        places[place["name"]] = place_info
+        print("name:",place["name"])
+        places[place["name"].strip()] = place_info
+        
 
     return places
 
